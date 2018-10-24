@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<meta name="generator" content="Jekyll">
+
+	<title>Literature Review Recommender System</title>
+  <meta name="description" content="A minimal, responsive, ready to use blog template, built with Jekyll.">
+
+	<!-- CSS & fonts -->
+	<link rel="stylesheet" href="/css/main.css">
+
+	<!-- RSS -->
+	<link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+
+</head>
+
+
+<body>
+	<div id="wrap">
+	  	
+	  	<!-- Navigation -->
+	  	<nav id="nav">
+	<div id="nav-list">
+		<a href="/">Home</a>
+
+		<!-- Nav pages -->
+	  
+	    
+	  
+	    
+	      <a href="/about" title="About Monochrome">About Monochrome</a>
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+    
+    <!-- Nav links -->
+	  <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+	</div>
+  
+  <!-- Nav footer -->
+	
+	  <footer>
+	
+	<span>version 1.0.0</span>
+
+</footer>
+	
+
+</nav>
+
+    
+    <!-- Icon menu -->
+	  <a id="nav-menu">
+	  	<div id="menu"></div>
+	  </a>
+
+      <!-- Header -->
+      
+        <header id="header" class="parent justify-spaceBetween">
+  <div class="inner w100 relative">
+    <span class="f-left">  
+      <a href="/">
+        <h1>
+          <span>Data Science </span>Blog
+        </h1>
+      </a>
+    </span>
+    <span id="nav-links" class="absolute right bottom">
+      <!-- Nav pages -->
+	    
+	      
+	    
+	      
+	        <a href="/about" title="About Monochrome">About Monochrome</a>
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+      
+      <!-- Nav links -->
+	    <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+    </span>
+  </div>
+</header>
+
+
+
+
+      
+
+    <!-- Main content -->
+	  <div id="container">
+		  
+		<main>
+
+			<article id="post-page">
+	<h2>Literature Review Recommender System</h2>		
+	<time datetime="2018-10-24T00:00:00+05:30" class="by-line">24 Oct 2018</time>
+	<div class="content">
+
+		
+<p><strong>Why we need recommender system ?</strong></p>
+
+<p>​	Web applications would love to give curated content to the user so that he has a good quality of options visible to him/her while using the web application.</p>
+
+<p><em>eg:-</em></p>
+
+<p>Scenario 1 -<em>Customized News articles - a news agency website would want to give customized news to each of its user based on the reading habits of each user</em>.</p>
+
+<p>Scenario 2 - <em>Based on past history data what a customer would like to buy</em></p>
+
+<p><strong>Types of Recommender Systems</strong></p>
+
+<p>Content based systems - <em>examine properties of the items recommended</em></p>
+
+<p>Collaborative filtering systems - <em>recommend items based on similarity measures between users and/or items.</em></p>
+
+<p><strong>Utility Matrix</strong></p>
+
+<p>​	In a recommender system, we are usualy trying to identify potential relationship between two classes namely  <em>User</em> and <em>item</em>. The Data showing the relationship between these two classes (<em>User -row and Item in col</em>)  is called a Utility Matrix. Utility matrix are generally <em>Sparse Matrix</em> (Matrix which has a value only when a relationship exist between both entities, hence most elements are zero in a sparse matrix</p>
+
+<p>​	Eventhough the goal of a recommender system is to predict the blanks in the utility matrix,  it is not necessary to predict every blank, it is necessary only to predict certain items that have a very high probablity.</p>
+
+<p><strong>Long Tail</strong> <em>(Marketing Theory)</em></p>
+
+<p>​	Physical delivery systems are characterized by a scarcity of resources. Brick-and-mortar stores have limited shelf space, and can show the customer only a small fraction of all the choices that exist. Hence in real world stores it is not possible to tailor each store based on the choice of each individual customer. However this is not the case with an online store, they have virtually infinite store space. And hence an online store showcase rare products that are not necessarily provided in custom physical store (because of less demand / more shelf space). But this long tail phenomenon leaves an online user with another problem the screen space in a laptop / mobile with which a user surfs the website is limited hence the retailer should be meticulous that he is providing items that intrests the user and guess who helps a retailer to solve this problem, yep Recommender systems to your help. !</p>
+
+<p><strong>Content Based Recommendations</strong></p>
+
+<p>This approach as mentioned previously focus on the properties of the item hence an <em>Item Profile</em> becomes necessary. <em>eg:- Movie Genre is an important item in the Item profile of a movie</em>. If the data that we are working is a document or an image the process becomes tricky. like movie genre for movies we need to have a topic for a document, so that we can recommend document based on topics.</p>
+
+<p><strong>Topic detection using TFIDF</strong>  will become handy here.  we first remove the stop words from the document and then compute the TFIDF score of each word in the document and the onces with highest frequency characterizes the document.</p>
+
+<p>Now if the data is images how do we get the profile of an image ? <strong>Tagging Of Images</strong> comes into picture here. This is still a research area perhaps i would comeback later to explore on the methods of tagging images.</p>
+
+<p>So the important aspect of a content based recommendation is the generation of profile vectors for both user and item there be we can match items to users as well as users to item both ways depending the need. Once the profile vectors are created, we could easily find out the similarity based on  distance metrics like cosine distance.</p>
+
+<p><strong>Collaborative Filtering</strong></p>
+
+<p>In collaborative filtering  we focus on the similarity of one user vector (each single row in the sparse matrix). if the user vectors are close according to some distance criteria we assume that users are similar. Recommendation for a user is made by looking at the user that are more similar to U in this sense. The process of identifying similar user and then recommending what similar users like is called collaborative filtering.</p>
+
+<p>Reference :-</p>
+
+
+		
+	</div>
+</article>
+
+
+
+	  </main>
+		
+		  <!-- Pagination links -->
+      
+
+	  </div>
+	    
+	    <!-- Footer -->
+	    <footer><span>@2017 - Monochrome</span></footer>
+
+
+	    <!-- Script -->
+      <script src="/js/main.js"></script>	
+
+
+	</div>
+</body>
+</html>

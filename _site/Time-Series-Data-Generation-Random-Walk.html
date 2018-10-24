@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<meta name="generator" content="Jekyll">
+
+	<title>Time Series Generation -An exploratory Study</title>
+  <meta name="description" content="A minimal, responsive, ready to use blog template, built with Jekyll.">
+
+	<!-- CSS & fonts -->
+	<link rel="stylesheet" href="/css/main.css">
+
+	<!-- RSS -->
+	<link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+
+</head>
+
+
+<body>
+	<div id="wrap">
+	  	
+	  	<!-- Navigation -->
+	  	<nav id="nav">
+	<div id="nav-list">
+		<a href="/">Home</a>
+
+		<!-- Nav pages -->
+	  
+	    
+	  
+	    
+	      <a href="/about" title="About Monochrome">About Monochrome</a>
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+    
+    <!-- Nav links -->
+	  <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+	</div>
+  
+  <!-- Nav footer -->
+	
+	  <footer>
+	
+	<span>version 1.0.0</span>
+
+</footer>
+	
+
+</nav>
+
+    
+    <!-- Icon menu -->
+	  <a id="nav-menu">
+	  	<div id="menu"></div>
+	  </a>
+
+      <!-- Header -->
+      
+        <header id="header" class="parent justify-spaceBetween">
+  <div class="inner w100 relative">
+    <span class="f-left">  
+      <a href="/">
+        <h1>
+          <span>Data Science </span>Blog
+        </h1>
+      </a>
+    </span>
+    <span id="nav-links" class="absolute right bottom">
+      <!-- Nav pages -->
+	    
+	      
+	    
+	      
+	        <a href="/about" title="About Monochrome">About Monochrome</a>
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+      
+      <!-- Nav links -->
+	    <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+    </span>
+  </div>
+</header>
+
+
+
+
+      
+
+    <!-- Main content -->
+	  <div id="container">
+		  
+		<main>
+
+			<article id="post-page">
+	<h2>Time Series Generation -An exploratory Study</h2>		
+	<time datetime="2018-10-22T00:00:00+05:30" class="by-line">22 Oct 2018</time>
+	<div class="content">
+
+		<p>​	So a simple google search on above topic gave quite a lot of results, along with some research papers and links to custom libraries. I was trying to understand the varies methodologies that currently exist to generate dummy data based on a say a very small number of samples. This could be very mush relatable for quite a lot of data scientist.  It is a very common occurance that your stake holder might just say “This is all the data i have, now show us what you could come with this”. Well my study here is to come up with an effective solution for all the data scientist who are challenged by their stake holders.</p>
+
+<h3 id="random-walk-a-better-approach-than-random-generation">Random Walk (A better approach than Random Generation)</h3>
+
+<p>​	So the first thing that crossed my mind was create a list of values and then use random function and pick random values from the list to extrapolate the data. Well this could work, but that would be naive imagine the situation where we would love the generated data to follow the same trend of the sample data. Random Walk is one such method that could come to our help.</p>
+
+<p><strong>What is random walk?</strong></p>
+
+<p>​	So my Primary understanding about Random Walk was that we are choosing a random number from a given random set / range of values. But I was clearly wrong.!!</p>
+
+<p><a href="https://machinelearningmastery.com/gentle-introduction-random-walk-times-series-forecasting-python/">Jason Brownlee’s Blog on Random Walk</a>  corrected my basic understanding of the concept of Random Walk in Time Series domain. The most important factor one needs to have about <strong>random walk</strong> is that <em>“the next value in the sequence is a modification of the previous value in the sequence.”</em> Or n my words the next time step is <em>not random</em> it is <em>dependent on previous value</em></p>
+
+<p>This could be mathematicaly explained as  <code class="highlighter-rouge">y(t) = B0 + B1*X(t-1) + e(t)</code> where  <code class="highlighter-rouge">y(t)</code> is the next value in the series, <code class="highlighter-rouge">B0</code>  is the constant drift / trend to be associate with <code class="highlighter-rouge">y(t)</code>, <code class="highlighter-rouge">B1</code> is the weight of effect of previous time step (this is value is generally between -1 &amp; 1) , <code class="highlighter-rouge">e(t)</code> is the stochastic error to be induced the time series. So, We have a perfect Equation into which we need to feed the input values to get a <strong>Random Walk</strong> effect. Now let us check out how to implement this in python.</p>
+
+<pre><code class="language-(python)">from random import seed
+import random
+from matplotlib import pyplot
+seed(120)
+B0=0.002
+random_walk = list()
+random_walk.append(B0-1 if random.random() &lt; 0.5 else B0+1)
+for i in range(1, 1000):
+	movement = -1 if random.random() &lt; 0.5 else 1
+	value = B0+random_walk[i-1] + movement+random.randint(-100,100)*.001
+	random_walk.append(value)
+pyplot.plot(random_walk)
+pyplot.show()
+</code></pre>
+
+<p><img src="/home/jithin/github/datapsyche.github.io/public/RandomWalk.png" alt="output" /></p>
+
+<p>So this looks a time series data, and generated randomly using random walk methodology. This could be used to comeup with a random dataset which would actualy resembles a realworld random process (like stock market).</p>
+
+<p>Reference : <a href="https://machinelearningmastery.com/gentle-introduction-random-walk-times-series-forecasting-python/">Jason Brownlee’s Blog on Random Walk</a></p>
+
+		
+	</div>
+</article>
+
+
+
+	  </main>
+		
+		  <!-- Pagination links -->
+      
+
+	  </div>
+	    
+	    <!-- Footer -->
+	    <footer><span>@2017 - Monochrome</span></footer>
+
+
+	    <!-- Script -->
+      <script src="/js/main.js"></script>	
+
+
+	</div>
+</body>
+</html>
