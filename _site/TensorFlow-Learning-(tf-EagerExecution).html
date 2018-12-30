@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<meta name="generator" content="Jekyll">
+
+	<title>Tensorflow learning (tf Eagerexecution)</title>
+  <meta name="description" content="A minimal, responsive, ready to use blog template, built with Jekyll.">
+
+	<!-- CSS & fonts -->
+	<link rel="stylesheet" href="/css/main.css">
+
+	<!-- RSS -->
+	<link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+
+</head>
+
+
+<body>
+	<div id="wrap">
+	  	
+	  	<!-- Navigation -->
+	  	<nav id="nav">
+	<div id="nav-list">
+		<a href="/">Home</a>
+
+		<!-- Nav pages -->
+	  
+	    
+	  
+	    
+	      <a href="/about" title="About Monochrome">About Monochrome</a>
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+    
+    <!-- Nav links -->
+	  <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+	</div>
+  
+  <!-- Nav footer -->
+	
+	  <footer>
+	
+	<span>version 1.0.0</span>
+
+</footer>
+	
+
+</nav>
+
+    
+    <!-- Icon menu -->
+	  <a id="nav-menu">
+	  	<div id="menu"></div>
+	  </a>
+
+      <!-- Header -->
+      
+        <header id="header" class="parent justify-spaceBetween">
+  <div class="inner w100 relative">
+    <span class="f-left">  
+      <a href="/">
+        <h1>
+          <span>Data Science </span>Blog
+        </h1>
+      </a>
+    </span>
+    <span id="nav-links" class="absolute right bottom">
+      <!-- Nav pages -->
+	    
+	      
+	    
+	      
+	        <a href="/about" title="About Monochrome">About Monochrome</a>
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+      
+      <!-- Nav links -->
+	    <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+    </span>
+  </div>
+</header>
+
+
+
+
+      
+
+    <!-- Main content -->
+	  <div id="container">
+		  
+		<main>
+
+			<article id="post-page">
+	<h2>Tensorflow learning (tf Eagerexecution)</h2>		
+	<time datetime="2018-10-31T00:00:00+05:30" class="by-line">31 Oct 2018</time>
+	<div class="content">
+
+		<p>y So this is a walk through of all the concepts that i have tried to learn in past 2 days about tensorflow. There are 4 highlevel API’s that were introduced in the latest version of TensorFlow (1.9 as on 10-31-2018). lets discuss about second of those 4 high level API’s, first being tf.keras.</p>
+
+<h3 id="part-2---eager-execution">Part-2 - Eager Execution</h3>
+
+<p>so this is relatively something that tensorflow borrowed from pytorch, in eager execution mode tensorflow just gives away the graphs and sessions paradigm. Here operations are evaluated immediately without building graphs. This makes tensorflow easier to understand as well as debug. The tensorflow code now resembles much more closer to native python code when in Eager execution mode. All the updated tensorflow libraries have the option to enable eager execution. below command quicly enables eager execution.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="n">tf</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">enable_eager_execution</span><span class="p">()</span>
+
+<span class="n">tf</span><span class="o">.</span><span class="n">executing_eagerly</span><span class="p">()</span> <span class="c1">## returns True in eage_execution mode
+</span></code></pre></div></div>
+
+<p>so how does this eager execution works. ? simple answer is it works just like python</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">2.</span><span class="p">]]</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"hello, {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+<span class="c1">## output -&gt; "hello, [[4.]]"
+</span></code></pre></div></div>
+
+<p><strong>With Numpy</strong></p>
+
+<p>Eager execution works closely with numpy. numpy operations accepts <code class="highlighter-rouge">tf.Tensor</code> arguments. <code class="highlighter-rouge">tf.Tensor.numpy</code> method returns objects value in numpy.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1">#output =&gt; tf.Tensor([[1 2] [3 4]], shape=(2, 2), dtype=int32)
+</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="c1">#output =&gt; tf.Tensor([[2 3] [4 5]], shape=(2, 2), dtype=int32)
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+<span class="c1">#output =&gt; tf.Tensor([[ 2  6] [12 20]], shape=(2, 2), dtype=int32)
+</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="c1">#output =&gt; [[ 2  6] [12 20]]
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+<span class="c1">#output =&gt; [[1 2] [3 4]]
+</span></code></pre></div></div>
+
+<p><code class="highlighter-rouge">tf.contrib.eager</code> module contains symbols available to both eager  and graph execution environments and is useful for writing code to work with graph. Hence we could write If and for loops just like a python variable for a tensorflow variable.</p>
+
+<p><strong>Building a Model</strong></p>
+
+<p>When using tensorflow with eager execution we can write our own layers or use a layer provided in the <code class="highlighter-rouge">tf.keras.layers</code> package. <code class="highlighter-rouge">tf.keras.layers.Layers</code> can be used as our Base class and inherit from this base class to implement our own custom layer.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MySimpleLayer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_units</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MySimpleLayer</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_units</span> <span class="o">=</span> <span class="n">output_units</span>
+        
+    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">input_shape</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_variable</span><span class="p">(</span><span class="s">"kernel"</span><span class="p">,[</span><span class="n">input_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">output_units</span><span class="p">])</span>
+    
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">input</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>So we have a custom layer ready, now we could prepare our model, lets go with the functional way of configuring a model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">MNISTModel</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MNISTModel</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dense2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="nb">input</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense1</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense2</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dense2</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MNISTModel</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>We have a model ready now. lets get to train our model, for that we need to know how to compute the gradient.</p>
+
+<p><strong>Computing Gradient</strong></p>
+
+<p>Automatic differentiation is useful for implementing machine learning algorithms such as backpropagation for training neural networks. During eager execution, use <code class="highlighter-rouge">tf.GradientTape</code> to trace operations for computing gradients later. <code class="highlighter-rouge">tf.GradientTape</code> is an opt in feature to provide maximal performance when not tracing. To compute gradient we play the tape backwards and then discard. A particular <code class="highlighter-rouge">tf.GradientTape</code> can only compute one gradient subsequent calls throws error.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">w</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">Variabel</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">]])</span>
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">w</span><span class="o">*</span><span class="n">w</span>
+<span class="n">grad</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">grad</span><span class="p">)</span>
+<span class="c1">#Output-&gt; tf.Tensor([[2.]]
+</span></code></pre></div></div>
+
+<p>lets look into this concept and how it is applied in a simple deep learning scenario.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">NUM_EXAMPLES</span><span class="o">=</span><span class="mi">1000</span>
+<span class="n">training_inputs</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">ranndom_normal</span><span class="p">([</span><span class="n">NUM_EXAMPLES</span><span class="p">])</span>
+<span class="n">noise</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="n">NUM_EXAMPLES</span><span class="p">])</span>
+<span class="n">training_outputs</span> <span class="o">=</span> <span class="n">training_inputs</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="n">noise</span>
+
+<span class="k">def</span> <span class="nf">prediction</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="n">weight</span><span class="p">,</span><span class="n">bias</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">input</span><span class="o">*</span><span class="n">weight</span><span class="o">+</span><span class="n">bias</span>
+
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span><span class="n">bias</span><span class="p">):</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">prediction</span><span class="p">(</span><span class="n">training_inputs</span><span class="p">,</span><span class="n">weights</span><span class="p">,</span><span class="n">bias</span><span class="p">)</span><span class="o">-</span><span class="n">training_outputs</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">weigths</span><span class="p">,</span> <span class="n">bias</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+        <span class="n">loss_value</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss_value</span><span class="p">,[</span><span class="n">weights</span><span class="p">,</span> <span class="n">biases</span><span class="p">])</span>
+
+<span class="n">train_steps</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">learning_rate</span> <span class="o">=</span><span class="mf">0.01</span>
+
+<span class="n">W</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">5.</span><span class="p">)</span>
+<span class="n">W</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">10.</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Initial Loss : {:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">B</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_steps</span><span class="p">):</span>
+    <span class="n">dW</span><span class="p">,</span> <span class="n">dB</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">W</span><span class="o">.</span><span class="n">assign_sub</span><span class="p">(</span><span class="n">dW</span><span class="o">*</span><span class="n">learning_rate</span><span class="p">)</span>
+    <span class="n">W</span><span class="o">.</span><span class="n">assign_sub</span><span class="p">(</span><span class="n">dB</span><span class="o">*</span><span class="n">learning_rate</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">20</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Loss at Step {:03d}:{:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loss</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">B</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Final loss: {:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">W</span><span class="p">,</span><span class="n">B</span><span class="p">)))</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"W={},B={}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="n">B</span><span class="o">.</span><span class="n">numpy</span><span class="p">()))</span>
+</code></pre></div></div>
+
+<p>This should be able to help you understand how to write a simple regression model in tensorflow. now lets look into writing a simple classification problem using vanila tensorflow.</p>
+
+<p><strong>Classification</strong> - MNIST Digit dataset</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">dataset</span>
+<span class="n">dataset_train</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="s">'./datasets'</span><span class="p">)</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="mi">60000</span><span class="p">)</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">sparse_softmax_crossentropy</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">prediction</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+        <span class="n">loss_value</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">inputs</span><span class="p">,</span><span class="n">targets</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss_Value</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+
+<span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">dataset_train</span><span class="p">)</span><span class="o">.</span><span class="nb">next</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Initial loss: {:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataset_train</span><span class="p">):</span>
+    <span class="n">grads</span><span class="o">=</span><span class="n">grad</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span><span class="n">model</span><span class="o">.</span><span class="n">variables</span><span class="p">),</span> <span class="n">global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">get_or_create_global_step</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">200</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Loss at step {:.4d}:{:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Final loss : {:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>    
+</code></pre></div></div>
+
+<p>we could also move the computation to GPU for faster training.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s">"/gpu:0"</span><span class="p">):</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataset_train</span><span class="p">):</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">minimize</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">get_or_create_global_step</span><span class="p">())</span>
+</code></pre></div></div>
+
+<p><strong>Variables and Optimizers</strong></p>
+
+<p><code class="highlighter-rouge">tf.Variable</code> object stores mutable <code class="highlighter-rouge">tf.Tensor</code> values accessed during training to make automatic differentiation easier. The parameters of a model can be encapsulated in classes as <code class="highlighter-rouge">tf.Variables</code> with <code class="highlighter-rouge">tf.GradientTape</code>. lets try this out.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">5.</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'weight'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">10.</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'bias'</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">call</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">inputs</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">W</span> <span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span>
+    
+    <span class="n">NUM_EXAMPLES</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="n">training_inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="n">NUM_EXAMPLES</span><span class="p">])</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="n">NUM_EXAMPLES</span><span class="p">])</span>
+    <span class="n">training_outputs</span> <span class="o">=</span> <span class="n">training_inputs</span><span class="o">*</span><span class="mi">3</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">noise</span>
+    
+    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">-</span> <span class="n">targets</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+            <span class="n">loss_value</span> <span class="o">=</span> <span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss_value</span><span class="p">,</span> <span class="p">[</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">B</span><span class="p">])</span>
+    
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">GradientDescentOptimizer</span><span class="p">(</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Initial loss : {:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">training_inputs</span><span class="p">,</span> <span class="n">training_outputs</span><span class="p">)))</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span>
+        <span class="n">grads</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">training_inputs</span><span class="p">,</span> <span class="n">training_outputs</span><span class="p">)</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="p">[</span><span class="n">Model</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">B</span><span class="p">]),</span><span class="n">global_step</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">get_or_create_global_step</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">20</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"Loss at step {:03d}: {:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">training_inputs</span><span class="p">,</span> <span class="n">training_outputs</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Final Loss : {:.3f}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">training_inputs</span><span class="p">,</span> <span class="n">training_outputs</span><span class="p">)))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"W = {}, B = {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span><span class="n">model</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">numpy</span><span class="p">()))</span>        
+</code></pre></div></div>
+
+<p><strong>Object Based Saving</strong></p>
+
+<p><code class="highlighter-rouge">tf.train.Checkpoint</code> can save and restore <code class="highlighter-rouge">tf.Variable</code> to and fro from checkpoints.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="mf">10.</span><span class="p">)</span>
+<span class="n">checkpoint</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Checkpoint</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="mf">2.</span><span class="p">)</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">'./ckpt/'</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="mf">11.</span><span class="p">)</span>
+<span class="n">checkpoint</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">save_path</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="c1">#output -&gt; 2.0
+</span></code></pre></div></div>
+
+<p><strong>To save and load Model through Checkpoints</strong></p>
+
+<p>to record the state of a model an optimizer and a global step we need to pass them to a tf.train.Checkpoint stores the internal state of objects, without requiring hidden variables. lets try this out.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">model</span> <span class="o">=</span> <span class="n">MyModel</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">AdamOptimizer</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">.001</span><span class="p">)</span>
+<span class="n">checkpoint_dir</span> <span class="o">=</span> <span class="s">'/path_to_model_dir'</span>
+<span class="n">checkpoint_prefix</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">checkpoint_dir</span><span class="p">,</span><span class="s">"ckpt"</span><span class="p">)</span>
+<span class="n">root</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">Checkpoint</span><span class="p">(</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="p">,</span> <span class="n">optimizer_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">get_or_create_global_step</span><span class="p">())</span>
+<span class="n">root</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">file_prefix</span> <span class="o">=</span> <span class="n">checkpoint_prefix</span><span class="p">)</span> <span class="c1">#or 
+</span><span class="n">root</span><span class="o">.</span><span class="n">restore</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">latest_checkpoint</span><span class="p">(</span><span class="n">checkpoint_dir</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p><strong>Object Oriented Metrics</strong></p>
+
+<p>we could store metrics as a variable as shown below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">tfe</span><span class="o">.</span><span class="n">metrics</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="s">"loss"</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">m</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># output -&gt; 2.5
+</span><span class="n">m</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">])</span>
+<span class="n">m</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>  <span class="c1"># output -&gt; 5.5
+</span></code></pre></div></div>
+
+<p><strong>Summaries and TensorBoard</strong></p>
+
+<p>TensorBoard is a visualisation tool for understanding, debugging and optimising the model training process. it uses summary events to display it to the user.</p>
+
+<p><code class="highlighter-rouge">tf.contrib.summary</code> is compatible with both wager and graph execution environments. Summary operations such as <code class="highlighter-rouge">tf.contrib.summary.scalar</code> are inserted during model construction . lets see how to do this.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">global_step</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">get_or_create_global_step</span><span class="p">()</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">create_file_writer</span><span class="p">(</span><span class="n">logdir</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">set_as_default</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+    <span class="n">global_step</span><span class="o">.</span><span class="n">assign_add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">record_summaries_every_n_global_steps</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">summary</span><span class="o">.</span><span class="n">scalar</span><span class="p">(</span><span class="s">'loss'</span><span class="p">,</span><span class="n">loss</span><span class="p">)</span>
+        <span class="o">....</span>
+        
+</code></pre></div></div>
+
+<h3 id="automatic-differentiation--advanced-concepts">Automatic Differentiation : Advanced Concepts</h3>
+
+<p><strong>Dynamic Model</strong> - <code class="highlighter-rouge">tf.GradientTape</code> can also be used with dynamic model.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">line_search_step</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">init_x</span><span class="p">,</span> <span class="n">rate</span> <span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="n">tape</span><span class="o">.</span><span class="n">watch</span><span class="p">(</span><span class="n">init_x</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">init_x</span><span class="p">)</span>
+<span class="n">grad</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">init_x</span><span class="p">)</span>
+<span class="n">grad_norm</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_sum</span><span class="p">(</span><span class="n">grad</span><span class="o">*</span><span class="n">grad</span><span class="p">)</span>
+<span class="n">init_value</span> <span class="o">=</span> <span class="n">value</span>
+<span class="k">while</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">init_value</span> <span class="o">-</span><span class="n">rate</span><span class="o">*</span><span class="n">grad_norm</span>
+	<span class="n">x</span> <span class="o">=</span> <span class="n">init_x</span> <span class="o">-</span> <span class="n">rate</span><span class="o">*</span><span class="n">grad</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">fb</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">rate</span> <span class="o">/=</span><span class="mf">2.0</span>
+ <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">value</span>
+
+</code></pre></div></div>
+
+<p>Like <code class="highlighter-rouge">tf.GradientTape</code> there are other major functions to compute gradients some of them are discussed below. These functions are usefull for writing math code with only tensor and gradient functions and without <code class="highlighter-rouge">tf.Variables</code></p>
+
+<p><code class="highlighter-rouge">tfe.gradients_function</code> -  Returns a function that computes the derivatives of its input function parameter with respect to its arguments.</p>
+
+<p><code class="highlighter-rouge">tfe.value_and_gradients_function</code>  - simialar to <code class="highlighter-rouge">tfe.gradients_function</code>  it returns the value from the input function in addition to the list of derivatives of the input function with respect to its arguments.</p>
+
+<p>lets work on some examples</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="n">grad</span> <span class="o">=</span> <span class="n">tfe</span><span class="o">.</span><span class="n">gradients_function</span><span class="p">(</span><span class="n">square</span><span class="p">)</span>
+<span class="n">square</span><span class="p">(</span><span class="mf">3.</span><span class="p">)</span> <span class="c1"># output -&gt; 9.0
+</span><span class="n">grad</span><span class="p">(</span><span class="mf">3.</span><span class="p">)</span>   <span class="c1"># output -&gt; [6.0]
+</span>
+<span class="n">gradgrad</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gradients_function</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">grad</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">grad</span><span class="p">(</span><span class="mf">3.</span><span class="p">)</span>  <span class="c1">#output -&gt; [2.0]
+</span>
+<span class="n">gradgradgrad</span> <span class="o">=</span> <span class="n">tfe</span><span class="o">.</span><span class="n">gradients_function</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">gradgrad</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">gradgradgrad</span><span class="p">(</span><span class="mf">3.</span><span class="p">)</span> <span class="c1">#output -&gt; [None]
+</span>
+<span class="k">def</span> <span class="nf">abs</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mf">0.</span> <span class="k">else</span> <span class="o">-</span><span class="n">x</span>
+
+<span class="n">grad</span> <span class="o">=</span> <span class="n">tfe</span><span class="o">.</span><span class="n">gradients_function</span><span class="p">(</span><span class="nb">abs</span><span class="p">)</span>
+<span class="n">grad</span><span class="p">(</span><span class="mf">3.</span><span class="p">)</span>   <span class="c1">#output -&gt; [1.0]
+</span><span class="n">grad</span><span class="p">(</span><span class="o">-</span><span class="mf">3.</span><span class="p">)</span>  <span class="c1">#output -&gt; [-1.0]
+</span>
+</code></pre></div></div>
+
+<p><strong>Custom Gradient</strong></p>
+
+<p>lets consider below example .</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">log1pexp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">tf</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">grad</span><span class="o">+</span><span class="n">log1pexp</span> <span class="o">=</span> <span class="n">tfe</span><span class="o">.</span><span class="n">gradients_function</span><span class="p">(</span><span class="n">log1pexp</span><span class="p">)</span>
+
+<span class="n">grad_log1pexp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1">#output -&gt; [0.5]
+</span><span class="n">grad_log1pexp</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="c1">#output -&gt; [nan]
+# x=100 fails because of numerical instability.
+</span></code></pre></div></div>
+
+<p>Now let us create a custom gradient for above function</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">tf</span><span class="o">.</span><span class="n">custom_gradient</span>
+<span class="k">def</span> <span class="nf">log1pexp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">grad</span><span class="p">(</span><span class="n">dy</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">dy</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">e</span><span class="p">),</span> <span class="n">grad</span>
+
+<span class="n">grad_log1pexp</span> <span class="o">=</span> <span class="n">tfe</span><span class="o">.</span><span class="n">gradients_function</span><span class="p">(</span><span class="n">log1pexp</span><span class="p">)</span>
+
+<span class="c1">#As before, the gradient computation works fine at x=0
+</span><span class="n">grad_log1pexp</span><span class="p">(</span><span class="mf">0.</span><span class="p">)</span> <span class="c1">#output -&gt; [0.5]
+</span>
+<span class="c1"># and the gradient computation also works at x=100
+</span><span class="n">grad_log1pexp</span><span class="p">(</span><span class="mf">100.</span><span class="p">)</span> <span class="c1">#output-&gt; [1.0]
+</span></code></pre></div></div>
+
+<h3 id="performance">Performance</h3>
+
+<p>In eager execution computation is automatically offloaded to GPU. however this could be controlled using <code class="highlighter-rouge">tf.device('/gpu:0')</code> or <code class="highlighter-rouge">tf.device('cpu:0')</code> command as per necessity. lets try this</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">time</span>
+<span class="k">def</span> <span class="nf">measure</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"Time to multiply a {} matric by itself {} times :"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">steps</span><span class="p">))</span>
+
+<span class="c1"># run on CPU:
+</span><span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s">"/cpu:0"</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"CPU:{} secs"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">measure</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="n">steps</span><span class="p">)))</span>
+    
+<span class="c1"># run on GPU, if available:
+</span><span class="k">if</span> <span class="n">tfe</span><span class="o">.</span><span class="n">num_gpus</span><span class="p">()</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s">"/gpu:0"</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"GPU:{} secs"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">measure</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span><span class="n">steps</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"GPU: not found"</span><span class="p">)</span>      
+</code></pre></div></div>
+
+<p>Lets also try to compute some operation in GPU while part in CPU.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_normal</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">])</span>
+<span class="n">x_gpu0</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">gpu</span><span class="p">()</span>
+<span class="n">x_cpu</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x_cpu</span><span class="p">,</span><span class="n">x_cpu</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x_gpu0</span><span class="p">,</span><span class="n">x_gpu0</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">tfe</span><span class="o">.</span><span class="n">num_gpus</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">x_gpu1</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">gpu</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x_gpu1</span><span class="p">,</span><span class="n">x_gpu1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Working with Graphs</strong></p>
+
+<p>eager execution makes development and debugging more interactive. But TensorFlow graph execution does have some advantages like distributed training, performance optimisations and production deployment. But writing a graph code is different from python code and it is quite difficult to decode for  a student programmer.  an eager execution code  will also run in tensorflow graph execution, the only difference would be that that we wont have to use <code class="highlighter-rouge">tf.enable_eager_execution()</code> in the beginning of our session. As per the tensorflow guide the best way to write a tensorflow program is to write the code parallely in eager execution mode and graph mode. test and debug in eager execution mode while run and deploy in graph mode.</p>
+
+<p><strong>Using eager execution in Graph mode</strong></p>
+
+<p>below example selectively enable eager execution in a tensorflow graph environment using  <code class="highlighter-rouge">tfe.py_func</code> interesting thing here is we have not used <code class="highlighter-rouge">tf.enable_eager_execution()</code> at all.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_py_func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span> <span class="k">as</span> <span class="n">sess</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span> <span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="c1"># call eager function in graph!
+</span>    <span class="n">pf</span> <span class="o">=</span> <span class="n">tfe</span><span class="o">.</span><span class="n">py_func</span><span class="p">(</span><span class="n">my_py_func</span><span class="p">,[</span><span class="n">x</span><span class="p">],</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">pf</span><span class="p">,</span> <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span> <span class="p">:[[</span><span class="mf">2.0</span><span class="p">]]})</span>
+<span class="c1">#output -&gt;  [[4.0]]
+</span></code></pre></div></div>
+
+
+		
+	</div>
+</article>
+
+
+
+	  </main>
+		
+		  <!-- Pagination links -->
+      
+
+	  </div>
+	    
+	    <!-- Footer -->
+	    <footer><span>@2017 - Monochrome</span></footer>
+
+
+	    <!-- Script -->
+      <script src="/js/main.js"></script>	
+
+
+	</div>
+</body>
+</html>

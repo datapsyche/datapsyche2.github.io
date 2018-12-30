@@ -452,7 +452,7 @@ footer {
  * https://github.com/mojombo/tpw/blob/master/css/syntax.css
  */
 .lineno {
-  color: #bfbfbf;
+  color: gray;
   margin-right: 1em; }
 
 .highlight .c {

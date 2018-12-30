@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+	<meta name="generator" content="Jekyll">
+
+	<title>Tensorflow learning (importing data)</title>
+  <meta name="description" content="A minimal, responsive, ready to use blog template, built with Jekyll.">
+
+	<!-- CSS & fonts -->
+	<link rel="stylesheet" href="/css/main.css">
+
+	<!-- RSS -->
+	<link href="/atom.xml" type="application/atom+xml" rel="alternate" title="ATOM Feed" />
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="img/favicon.png">
+
+</head>
+
+
+<body>
+	<div id="wrap">
+	  	
+	  	<!-- Navigation -->
+	  	<nav id="nav">
+	<div id="nav-list">
+		<a href="/">Home</a>
+
+		<!-- Nav pages -->
+	  
+	    
+	  
+	    
+	      <a href="/about" title="About Monochrome">About Monochrome</a>
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+	    
+	  
+    
+    <!-- Nav links -->
+	  <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+	</div>
+  
+  <!-- Nav footer -->
+	
+	  <footer>
+	
+	<span>version 1.0.0</span>
+
+</footer>
+	
+
+</nav>
+
+    
+    <!-- Icon menu -->
+	  <a id="nav-menu">
+	  	<div id="menu"></div>
+	  </a>
+
+      <!-- Header -->
+      
+        <header id="header" class="parent justify-spaceBetween">
+  <div class="inner w100 relative">
+    <span class="f-left">  
+      <a href="/">
+        <h1>
+          <span>Data Science </span>Blog
+        </h1>
+      </a>
+    </span>
+    <span id="nav-links" class="absolute right bottom">
+      <!-- Nav pages -->
+	    
+	      
+	    
+	      
+	        <a href="/about" title="About Monochrome">About Monochrome</a>
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+	      
+	    
+      
+      <!-- Nav links -->
+	    <a href="https://github.com/thereviewindex/monochrome/archive/master.zip">Download</a>
+<a href="https://github.com/thereviewindex/monochrome">Project on Github</a>
+
+
+    </span>
+  </div>
+</header>
+
+
+
+
+      
+
+    <!-- Main content -->
+	  <div id="container">
+		  
+		<main>
+
+			<article id="post-page">
+	<h2>Tensorflow learning (importing data)</h2>		
+	<time datetime="2018-11-01T00:00:00+05:30" class="by-line">01 Nov 2018</time>
+	<div class="content">
+
+		<p>So this is a walk through of all the concepts that i have tried to learn in past 3 days about tensorflow. There are 4 highlevel API’s that were introduced in the latest version of TensorFlow (1.9 as on 10-31-2018). lets discuss about third of those 4 high level API’s, we have already coverd tf.keras, EagerExecution previously. lets look into Importing Data.</p>
+
+<h3 id="importing-data">Importing Data</h3>
+
+<p>Here our aim is to build a robust data Pipeline and Tensorflow has came up with <code class="highlighter-rouge">tf.data</code> API to enable us build complex input pipelines from simple reuseable pieces. <code class="highlighter-rouge">tf.data</code> helps us to make it easy to deal with large amount of data, different format of data with complicated transformation.</p>
+
+<p><code class="highlighter-rouge">tf.data</code> API introduces two new abstractions to tensorflow :</p>
+
+<p><code class="highlighter-rouge">tf.data.Dataset</code> - to represent a sequence of element, in which each element contain one or more Tensor object. two important methods that could be put to use are 				    <code class="highlighter-rouge">tf.data.Dataset.from_tensor_slices(</code> - to construct a dataset from one or more <code class="highlighter-rouge">tf.Tensor</code> objects.</p>
+
+<p><code class="highlighter-rouge">tf.data.Dataset.batch()</code>  helps us to apply transformation on <code class="highlighter-rouge">tf.data.Dataset</code> object.</p>
+
+<p>Next method is <code class="highlighter-rouge">tf.data.Iterator</code> - it provides the main way to extract elements from a dataset.  The operation returned by <code class="highlighter-rouge">Iterator.get_next()</code> yields the next element of a Dataset when executed and acts as an interface between input pipeline code and model.</p>
+
+<p><strong>Fundamentals of Creating a Dataset and Iterator objects</strong></p>
+
+<p>For a input data pipeline we need to have a source defined if the source is in tensor format then <code class="highlighter-rouge">tf.data.Dataset.from_tensors()</code> or <code class="highlighter-rouge">tf.data.Dataset.from_tensor_slices()</code> could be used. instead if the data is in disk in the recommended <code class="highlighter-rouge">TFRecord</code> format we can use <code class="highlighter-rouge">tf.data.TFRecordDataset</code> method. Once the <code class="highlighter-rouge">Dataset</code> object is ready  we can transform it into a new <code class="highlighter-rouge">Dataset</code> by chaining method calls on the <code class="highlighter-rouge">tf.data.Dataset</code> object.  Elemental transformation on this <code class="highlighter-rouge">Dataset</code> object could be done using <code class="highlighter-rouge">Dataset.map</code> and multi element transformation could be carried out using <code class="highlighter-rouge">Dataset.batch()</code>. As mentioned earlier we make use of <code class="highlighter-rouge">tf.data.Iterator</code> for consuming values from <code class="highlighter-rouge">Dataset</code> object. <code class="highlighter-rouge">tf.data.Iterator</code> has two important methods namely <code class="highlighter-rouge">Iterator.initializer</code> to reinitialize iterator state and <code class="highlighter-rouge">Iterator.get_next()</code> to get the next element or next batch of element from the dataset.</p>
+
+<p><strong>Dataset Structure</strong></p>
+
+<p>A dataset comprises of elements that each have the same structure.  An element contains one or more <code class="highlighter-rouge">tf.Tensor</code> object called components and each component has a <code class="highlighter-rouge">tf.DType</code> representing the type of the elements in the tensor and a <code class="highlighter-rouge">tf.TensorShape</code> representing the the static shape of each element. lets dive into code rather than explaining here.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_slices</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">]))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dataset1</span><span class="o">.</span><span class="n">output_types</span><span class="p">)</span>   <span class="c1"># output -&gt; tf.float32
+</span><span class="k">print</span><span class="p">(</span><span class="n">dataset1</span><span class="o">.</span><span class="n">output_shapes</span><span class="p">)</span>  <span class="c1"># output -&gt; (10,)
+</span>
+<span class="n">dataset2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">4</span><span class="p">]),</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">100</span><span class="p">],</span> <span class="n">maxval</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dataset2</span><span class="o">.</span><span class="n">output_types</span><span class="p">)</span>   <span class="c1"># output -&gt; (tf.float32, tf.float32)
+</span><span class="k">print</span><span class="p">(</span><span class="n">dataset2</span><span class="o">.</span><span class="n">output_shapes</span><span class="p">)</span>  <span class="c1"># output -&gt; ((),(100,))
+</span>
+<span class="n">dataset3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="nb">zip</span><span class="p">((</span><span class="n">dataset1</span><span class="p">,</span><span class="n">dataset2</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">dataset3</span><span class="o">.</span><span class="n">output_types</span><span class="p">)</span>   <span class="c1"># output -&gt; (tf.float32,(tf.float32, tf.float32))
+</span><span class="k">print</span><span class="p">(</span><span class="n">dataset3</span><span class="o">.</span><span class="n">output_shapes</span><span class="p">)</span>  <span class="c1"># output -&gt; (10,((),(100,)))
+</span></code></pre></div></div>
+
+<p>some examples of <code class="highlighter-rouge">Dataset</code> transformation function</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset1</span> <span class="o">=</span> <span class="n">dataset1</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">dataset2</span> <span class="o">=</span> <span class="n">dataset1</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">:</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">dataset3</span> <span class="o">=</span> <span class="n">dataset1</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,(</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span> <span class="o">...</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="creating-an-iterator">Creating an Iterator</h4>
+
+<p>there are multiple types of iterator namely, <em>one-shot, initializable, reinitializable and feedable</em></p>
+
+<p><strong>One-Shot Iterator</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">iterator</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">make_one_shot_iterator</span><span class="p">()</span>
+<span class="n">next_element</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">next_element</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">i</span> <span class="o">==</span><span class="n">value</span>
+</code></pre></div></div>
+
+<p><strong>Initializable</strong> -  iterator requires you to run an explicit <code class="highlighter-rouge">iterator.initializer</code> operation before using it. it enables us to <em>parameterize</em> the definition of the dataset, using one or more <code class="highlighter-rouge">tf.placeholder()</code></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">max_value</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="nb">range</span><span class="p">(</span><span class="n">max_value</span><span class="p">)</span>
+<span class="n">iterator</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">make_initializable_iterator</span><span class="p">()</span>
+<span class="n">next_element</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">max_value</span> <span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">next_element</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">i</span> <span class="o">==</span> <span class="n">value</span>
+
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">iterator</span><span class="o">.</span><span class="n">initializer</span><span class="p">,</span> <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">max_value</span> <span class="p">:</span> <span class="mi">100</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">next_element</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">i</span> <span class="o">==</span> <span class="n">value</span>
+</code></pre></div></div>
+
+<p><strong>Reinitializable</strong>  -  A reinitializable iterator can be initialized from multiple different <code class="highlighter-rouge">Dataset</code> objects. like training dataset and validation dataset. These pipelines will typically use different Dataset objects that have the same structure.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Define training and validation datasets with the same structure.
+</span><span class="n">training_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="nb">map</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">random_uniform</span><span class="p">([],</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
+<span class="n">validation_dataset</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="n">iterator</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Iterator</span><span class="o">.</span><span class="n">from_structure</span><span class="p">(</span><span class="n">training_dataset</span><span class="o">.</span><span class="n">output_types</span><span class="p">,</span>
+                                           <span class="n">training_dataset</span><span class="o">.</span><span class="n">output_shapes</span><span class="p">)</span>
+<span class="n">next_element</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">get_next</span><span class="p">()</span>
+
+<span class="n">training_init_op</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="n">training_dataset</span><span class="p">)</span>
+<span class="n">validation_init_op</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">make_initializer</span><span class="p">(</span><span class="n">validation_dataset</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+  <span class="c1"># Initialize an iterator over the training dataset.
+</span>  <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">training_init_op</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">next_element</span><span class="p">)</span>
+
+  <span class="c1"># Initialize an iterator over the validation dataset.
+</span>  <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">validation_init_op</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+    <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">next_element</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>Feedable</strong> -</p>
+
+
+		
+	</div>
+</article>
+
+
+
+	  </main>
+		
+		  <!-- Pagination links -->
+      
+
+	  </div>
+	    
+	    <!-- Footer -->
+	    <footer><span>@2017 - Monochrome</span></footer>
+
+
+	    <!-- Script -->
+      <script src="/js/main.js"></script>	
+
+
+	</div>
+</body>
+</html>
