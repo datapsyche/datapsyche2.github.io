@@ -6,7 +6,8 @@ description: This page is about me.
 ## About Me
 Hi There, Thank you for visiting  I'm **Jithin J Kumar** and this is a **Personal Study Blog**. It is very very messy as of now because i'm in the process of learning Data Science i'm just once year into my journey to become a Data Scientist (as on  31st December, 2018) . I plan to spend more time and effort to make this a structured blog for data science enthusiasts who want to pursue a career as a data scientist.
 
-## My Incredible Career Journey
+### My Incredible Career Journey..
+
 - **Data Scientist at Grad Valley Data Science** - I finaly found my true calling, Currently I'm working as Intern Data Scientist at GradValley Data Science as a part of 6 month Industry Sponsored Fellowship Program in AI / ML.
 
 - **Analyst in Big Four Audit Company (Ernst And Young - GDS) for 2.5 years** - Greatfull to everyone who i happened to meet in EY. Great People, Great Leaders I learned a lot from here. It was my job as analyst here that helped me gather necessary courage to pursue Data Science as my career
